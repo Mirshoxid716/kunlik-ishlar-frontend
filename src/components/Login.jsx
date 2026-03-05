@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Lock, User, Briefcase, Globe } from 'lucide-react'
 import { useLanguage } from '../context/LanguageContext'
 
+import API_URL from '../config'
+
 const Login = ({ onLogin }) => {
     const { t, lang, setLang } = useLanguage()
     const [username, setUsername] = useState('')
@@ -10,12 +12,10 @@ const Login = ({ onLogin }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
         try {
-            const response = await fetch(`${apiUrl}/api/jobs/users/login/`, {
+            const response = await fetch(`${API_URL}/api/jobs/users/login/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
             })
             const data = await response.json()
             if (response.ok) {
