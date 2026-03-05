@@ -533,7 +533,7 @@ const ApplicationsList = ({ applications, onApprove, onReject, onJobClick }) => 
                             <div className="pt-3 border-t border-slate-800/50 flex justify-between items-center">
                                 <span className="text-[10px] text-slate-500 uppercase font-black">{t('receipt')}</span>
                                 <a
-                                    href={app.payment_receipt.startsWith('http') ? app.payment_receipt : `http://localhost:8000${app.payment_receipt}`}
+                                    href={app.payment_receipt.startsWith('http') ? app.payment_receipt : `${API_URL}${app.payment_receipt}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="text-yellow-500 hover:text-yellow-400 text-xs font-bold tracking-tight bg-yellow-500/5 px-3 py-1 rounded-lg border border-yellow-500/20"
@@ -611,7 +611,7 @@ const WorkersList = ({ workers }) => {
                                 <td className="px-8 py-6">
                                     {worker.passport_photo ? (
                                         <a
-                                            href={worker.passport_photo.startsWith('http') ? worker.passport_photo : `http://localhost:8000${worker.passport_photo}`}
+                                            href={worker.passport_photo.startsWith('http') ? worker.passport_photo : `${API_URL}${worker.passport_photo}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="text-yellow-500 hover:text-yellow-400 text-xs font-bold border-b border-yellow-500/30 pb-0.5 transition-all"
