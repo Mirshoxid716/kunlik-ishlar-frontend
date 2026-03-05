@@ -25,7 +25,7 @@ const Login = ({ onLogin }) => {
                 setError(data.error || 'Login yoki parol xato!')
             }
         } catch (err) {
-            setError('Server bilan bog\'lanishda xatolik!')
+            setError(`Bog'lanish xatosi (URL: ${API_URL}). Vercel'da VITE_API_URL ni o'rnatganingizni tekshiring!`)
         }
     }
 
