@@ -529,6 +529,19 @@ const ApplicationsList = ({ applications, onApprove, onReject, onJobClick }) => 
                                 #{app.job_details?.unical_id || 'N/A'}
                             </button>
                         </div>
+                        {app.location_photo && (
+                            <div className="pt-3 border-t border-slate-800/50 flex justify-between items-center">
+                                <span className="text-[10px] text-slate-500 uppercase font-black">{t('location') || 'LOKATSIYA'}</span>
+                                <a
+                                    href={app.location_photo.startsWith('http') ? app.location_photo : `${API_URL}${app.location_photo}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-500 hover:text-blue-400 text-xs font-bold tracking-tight bg-blue-500/5 px-3 py-1 rounded-lg border border-blue-500/20"
+                                >
+                                    VIEW
+                                </a>
+                            </div>
+                        )}
                         {app.payment_receipt && (
                             <div className="pt-3 border-t border-slate-800/50 flex justify-between items-center">
                                 <span className="text-[10px] text-slate-500 uppercase font-black">{t('receipt')}</span>
