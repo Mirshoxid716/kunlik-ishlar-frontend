@@ -5,7 +5,7 @@ import JobForm from './JobForm'
 import JobDetailsModal from './JobDetailsModal'
 import { useLanguage } from '../context/LanguageContext'
 
-const BASE_API_URL = 'http://localhost:8000/api/jobs'
+const BASE_API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/jobs` : 'http://localhost:8000/api/jobs'
 
 const Dashboard = ({ onLogout, user }) => {
     const { t, lang, setLang } = useLanguage()
