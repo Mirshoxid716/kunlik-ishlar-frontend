@@ -113,6 +113,18 @@ const Dashboard = ({ onLogout, user }) => {
         }
     }
 
+    const handleDeleteJob = async (id) => {
+        if (!window.confirm('Haqiqatan ham bu ishni o\'chirib tashlamoqchimisiz?')) return;
+        try {
+            await axios.delete(`${BASE_API_URL}/jobs/${id}/`);
+            fetchJobs();
+            fetchApplications(); // refreshing to sync deleted job applications
+        } catch (err) {
+            console.error(err);
+            alert('Ishni o\'chirishda xatolik yuz berdi');
+        }
+    }
+
     const handleApprove = async (id) => {
         try {
             await axios.post(`${BASE_API_URL}/applications/${id}/approve/`)
@@ -343,7 +355,7 @@ const Dashboard = ({ onLogout, user }) => {
                 </header>
 
                 {activeTab === 'jobs' ? (
-                    <JobsList jobs={paginatedResults} onJobClick={setSelectedJob} />
+                    <JobsList jobs={paginatedResults} onJobClick={setSelectedJob} onDeleteJob={handleDeleteJob} />
                 ) : activeTab === 'applications' ? (
                     <ApplicationsList
                         applications={paginatedResults}
@@ -414,7 +426,7 @@ const Dashboard = ({ onLogout, user }) => {
     )
 }
 
-const JobsList = ({ jobs, onJobClick }) => {
+const JobsList = ({ jobs, onJobClick, onDeleteJob }) => {
     const { t } = useLanguage()
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -433,13 +445,22 @@ const JobsList = ({ jobs, onJobClick }) => {
                         <span className={`px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase ${job.status === 'open' ? 'bg-yellow-500/10 text-yellow-500' : 'bg-red-500/10 text-red-500'}`}>
                             {job.status === 'open' ? `• ${t('open_status')}` : `• ${t('closed_status')}`}
                         </span>
-                        <button
-                            onClick={() => onJobClick(job)}
-                            className="text-slate-400 hover:text-yellow-500 font-mono text-xs font-bold border border-slate-800 hover:border-yellow-500/50 bg-slate-950 px-3 py-1.5 rounded inline-flex items-center transition-all shadow-sm shadow-black focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
-                            title="Ish ma'lumotlarini ko'rish"
-                        >
-                            #{job.unical_id}
-                        </button>
+                        <div className="flex gap-2">
+                            <button
+                                onClick={(e) => { e.stopPropagation(); onJobClick(job); }}
+                                className="text-slate-400 hover:text-yellow-500 font-mono text-xs font-bold border border-slate-800 hover:border-yellow-500/50 bg-slate-950 px-3 py-1.5 rounded inline-flex items-center transition-all shadow-sm shadow-black focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
+                                title="Ish ma'lumotlarini ko'rish"
+                            >
+                                #{job.unical_id}
+                            </button>
+                            <button
+                                onClick={(e) => { e.stopPropagation(); onDeleteJob(job.id); }}
+                                className="text-slate-400 hover:text-red-500 font-mono text-xs font-bold border border-slate-800 hover:border-red-500/50 bg-slate-950 px-3 py-1.5 rounded inline-flex items-center transition-all shadow-sm shadow-black focus:outline-none focus:ring-2 focus:ring-red-500/50"
+                                title="Ishni o'chirish"
+                            >
+                                <Trash2 size={14} />
+                            </button>
+                        </div>
                     </div>
                     <h3 className="text-xl font-bold mb-3 group-hover:text-yellow-500 transition-colors">{job.title}</h3>
                     <p className="text-slate-400 text-sm mb-6 line-clamp-2 leading-relaxed">{job.description}</p>
